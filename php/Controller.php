@@ -48,17 +48,11 @@ class Controller
     {
         $prize = (new Prize())->runGame();
         if (isset($prize)) {
-            $responce = [
-                'status'            => 'success',
-                'prize_type'        => $prize->type,
-                'prize_amount'      => $prize->amount,
-                'prize_id'          => $prize->id,
-                'prize_description' => $prize->description,
-            ];
+            $response = array_merge(['status' => 'success'], $prize->toArray());
         } else {
-            $responce = ['status' => false];
+            $response = ['status' => false];
         }
-        $this->view->generateJson($responce);
+        $this->view->generateJson($response);
     }
 
     /**

@@ -248,5 +248,13 @@ class Prize extends FileDataModel
         return true;
     }
 
+    public function toArray(){
+        return [
+            'prize_type'        => $this->type,
+            'prize_amount'      => $this->amount,
+            'prize_id'          => $this->id,
+            'prize_description' => $this->description,
+        ];
+    }
 
 }
