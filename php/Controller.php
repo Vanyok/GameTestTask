@@ -89,8 +89,8 @@ class Controller
         echo json_encode(['status' => 'success',]);
     }
 
-    private function renderView($template = 'template.php')
+    private function renderView($view, $template = 'template.php')
     {
-        $this->view->generate($template);
+        $this->view->generate($view, $template);
     }
 }

@@ -99,15 +99,14 @@ var Game = function (params) {
                 prize_id: prize_id
             },
             success: function (data) {
-                if (data.status == 'success') {
-                    alert('Your prize will sent in 3 days');
-                    prize_id = -1;
-                    $("#winner_text").html("");
-                    $(".cash").hide();
-                    show_butt();
-                } else {
+                if (data.status !== 'success') {
                     alert('Pls try later');
                 }
+                alert('Your prize will sent in 3 days');
+                prize_id = -1;
+                $("#winner_text").html("");
+                $(".cash").hide();
+                show_butt();
                 loading_stop();
 
             },
@@ -132,15 +131,14 @@ var Game = function (params) {
                 prize_id: prize_id
             },
             success: function (data) {
-                if (data.status == 'success') {
-                    alert('Your prize was converted to ICO');
-                    prize_id = -1;
-                    $("#winner_text").html("");
-                    $(".cash").hide();
-                    show_butt();
-                } else {
+                if (data.status !== 'success') {
                     alert('Pls try later');
                 }
+                alert('Your prize was converted to ICO');
+                prize_id = -1;
+                $("#winner_text").html("");
+                $(".cash").hide();
+                show_butt();
                 loading_stop();
             },
             error: function () {

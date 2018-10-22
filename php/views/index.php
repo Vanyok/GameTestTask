@@ -14,7 +14,7 @@
     <div class="jumbotron">
         <h1>Congratulations!</h1>
 
-        <p class="lead">You can win a prize!!! Just puss the button!!!</p>
+        <p class="lead">You can win a prize!!! Just push the button!!!</p>
 
         <p><a id="start_butt" class="btn btn-lg btn-warning" href="javascript: void(0);" onclick="game.startGame()">Get
                 prize!</a></p>

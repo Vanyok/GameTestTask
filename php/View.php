@@ -9,12 +9,16 @@
 
 class View
 {
-    function generate($template_view, $data = null)
+
+    function generate($content_view, $template_view, $data = null)
     {
-        if (is_array($data)) {
+
+        if(is_array($data)) {
             // convert array to vars
             extract($data);
         }
-        include 'views/' . $template_view;
+
+
+        include 'views/'.$template_view;
     }
 }
