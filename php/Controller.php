@@ -14,23 +14,27 @@ use View;
 class Controller
 
 {
-    public $view;
+    /** @var View  instance of View class */
+    protected $view;
 
-    function __construct()
+    function __construct($view)
     {
 
-        $this->view = new View();
+        $this->view = $view;
     }
 
+    protected function actions(){
+        return ['index','start_game','cancel_prize','get_prize','convert_to_ico'];
+    }
     public function run()
     {
-        if (isset($_GET['a'])) {
-            $action = 'action_' . $_GET['a'];
-            $this->$action();
-        } else {
+        $actionName = isset($_GET['a']) ? $_GET['a'] : '';
+        if (!in_array($actionName,$this->actions())) {
             $this->action_index();
-
         }
+        $action = 'action_' . $actionName;
+        $this->$action();
+
 
 
     }
@@ -54,7 +58,7 @@ class Controller
         } else {
             $responce = ['status' => false];
         }
-        echo json_encode($responce);
+        $this->view->generateJson($responce);
     }
 
     /**
@@ -63,7 +67,7 @@ class Controller
     public function action_cancel_prize()
     {
         //cancel logic here
-        echo json_encode(['status' => 'success',]);
+        $this->view->generateJson(['status' => 'success']);
     }
 
     /**
@@ -74,7 +78,8 @@ class Controller
     public function action_get_prize()
     {
         //prize deliver to user logic here
-        echo json_encode(['status' => 'success',]);
+        $this->view->generateJson(['status' => 'success']);
+
     }
 
 
@@ -86,11 +91,13 @@ class Controller
     public function action_convert_to_ico()
     {
         //convert cash to icon logic here
-        echo json_encode(['status' => 'success',]);
+        $this->view->generateJson(['status' => 'success']);
     }
 
     private function renderView($view, $template = 'template.php')
     {
         $this->view->generate($view, $template);
     }
+
+
 }

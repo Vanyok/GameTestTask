@@ -21,4 +21,8 @@ class View
 
         include 'views/'.$template_view;
     }
+
+    function generateJson($dataArray){
+        echo json_encode($dataArray);
+    }
 }

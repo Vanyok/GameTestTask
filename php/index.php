@@ -10,6 +10,6 @@ require_once 'Params.php';
 require_once 'models/Prize.php';
 require_once 'models/DUser.php';
 require_once 'models/FileDataModel.php';
-$controller = new Controller();
+$controller = new Controller(new View());
 
 $controller->run();
