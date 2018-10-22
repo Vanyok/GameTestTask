@@ -6,9 +6,9 @@ var Game = function (params) {
     var cancel_url = params.cancel_url;
     var get_url = params.get_url;
     var convert_url = params.convert_url;
-
+    var winnerTExtEl = $("#winner_text");
     var startGame = function () {
-        if (user_id == -1) {
+        if (user_id === -1) {
             alert('You should register or login first!');
             return;
         }
@@ -20,20 +20,19 @@ var Game = function (params) {
             type: "POST",
             dataType: 'JSON',
             success: function (data) {
-                if (data.status == 'success') {
-                    if (data.prize_type == 'cash') {
-                        var html = "Congrats!!!, You've win " + data.prize_amount + "$. You can withdraw them to your banc account or convert to ICO";
-                        $("#winner_text").html(html);
+                if (data.status === 'success') {
+                    var html = '';
+                    if (data.prize_type === 'cash') {
+                        html = "Congrats!!!, You've win " + data.prize_amount + "$. You can withdraw them to your banc account or convert to ICO";
                         $('.cash').show();
-                    } else if (data.prize_type == 'item') {
-                        var html = "Congrats!!!, You've win " + data.prize_description + ". You can get it by post";
-                        $("#winner_text").html(html);
+                    } else if (data.prize_type === 'item') {
+                        html = "Congrats!!!, You've win " + data.prize_description + ". You can get it by post";
                         $('.item').show();
-                    } else if (data.prize_type == 'ico') {
-                        var html = "Congrats!!!, You've win " + data.prize_amount + " ICO. You can add them to your account";
-                        $("#winner_text").html(html);
+                    } else if (data.prize_type === 'ico') {
+                        html = "Congrats!!!, You've win " + data.prize_amount + " ICO. You can add them to your account";
                         $('.ico').show();
                     }
+                    winnerTExtEl.html(html);
                     prize_id = data.prize_id;
                 } else {
                     alert('Pls try later');
@@ -52,7 +51,7 @@ var Game = function (params) {
 
 
     var cancel_prize = function () {
-        if (user_id == -1) {
+        if (user_id === -1) {
             alert('You should register or login first!');
             return;
         }
@@ -66,12 +65,10 @@ var Game = function (params) {
                 prize_id: prize_id
             },
             success: function (data) {
-                if (data.status == 'success') {
+                if (data.status === 'success') {
                     alert('Your prize was cancelled');
-                    $("#winner_text").html("");
                     prize_id = -1;
-                    $(".cash").hide();
-                    show_butt();
+                    clearWinnerText()
                 } else {
                     alert('Pls try later');
                 }
@@ -86,7 +83,7 @@ var Game = function (params) {
         })
     };
     var get_prize = function () {
-        if (user_id == -1) {
+        if (user_id === -1) {
             alert('You should register or login first!');
             return;
         }
@@ -99,12 +96,10 @@ var Game = function (params) {
                 prize_id: prize_id
             },
             success: function (data) {
-                if (data.status == 'success') {
+                if (data.status === 'success') {
                     alert('Your prize will sent in 3 days');
                     prize_id = -1;
-                    $("#winner_text").html("");
-                    $(".cash").hide();
-                    show_butt();
+                    clearWinnerText()
                 } else {
                     alert('Pls try later');
                 }
@@ -119,7 +114,7 @@ var Game = function (params) {
         })
     };
     var convert_prize = function () {
-        if (user_id == -1) {
+        if (user_id === -1) {
             alert('You should register or login first!');
             return;
         }
@@ -132,12 +127,10 @@ var Game = function (params) {
                 prize_id: prize_id
             },
             success: function (data) {
-                if (data.status == 'success') {
+                if (data.status ==='success') {
                     alert('Your prize was converted to ICO');
                     prize_id = -1;
-                    $("#winner_text").html("");
-                    $(".cash").hide();
-                    show_butt();
+                    clearWinnerText()
                 } else {
                     alert('Pls try later');
                 }
@@ -150,6 +143,12 @@ var Game = function (params) {
 
         })
     };
+
+    function clearWinnerText() {
+        winnerTExtEl.html("");
+        $(".cash").hide();
+        show_butt();
+    }
 
     function loading_start() {
         $('#progress').show();

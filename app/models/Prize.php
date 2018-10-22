@@ -83,8 +83,10 @@ class Prize extends \yii\db\ActiveRecord
     public function runGame()
     {
         $allPrizes = $this->getAvailablePrizes();
-        if (count($allPrizes) > 0) {
-            $num_of_items = count($allPrizes);
+        if (count($allPrizes) == 0){
+            return null;
+        }
+          $num_of_items = count($allPrizes);
             $winner = rand(0, $num_of_items);
             $prize = $allPrizes[$winner];
             $prize->status = Prize::PRIZE_IN_BLOCK;
@@ -92,8 +94,8 @@ class Prize extends \yii\db\ActiveRecord
             if($prize->save()){
                 return $prize;
             };
-        }
-            return null;
+
+        return null;
     }
 
     public function getAvailablePrizes()
@@ -103,12 +105,10 @@ class Prize extends \yii\db\ActiveRecord
 
     private function getAvailableIco()
     {
-
         $step = Yii::$app->params['ico_step'];
         $limit = Yii::$app->params['icoLimit'];
         $start_amount = Yii::$app->params['ico_start_amount'];
         return $this->generateIcoCashSet($start_amount, $limit, $step, Prize::PRIZE_ICO);
-
     }
 
     private function generateIcoCashSet($start, $limit, $step, $type)
@@ -122,9 +122,7 @@ class Prize extends \yii\db\ActiveRecord
                 'status' => Prize::PRIZE_CREATED,
             ]);
         };
-
         return $set;
-
     }
 
     /**
@@ -141,7 +139,6 @@ class Prize extends \yii\db\ActiveRecord
         $spent = isset($prizes_exist_row) ? $prizes_exist_row['amount'] : 0;
         $limit = $limit < ($total - $spent) ? $limit : ($total - $spent);
         return $this->generateIcoCashSet($start_amount, $limit, $step, Prize::PRIZE_CASH);
-
     }
 
     /**
@@ -152,7 +149,9 @@ class Prize extends \yii\db\ActiveRecord
     {
         $set = [];
         $items = Yii::$app->params['bonus_items'];
-        $spent_items = Prize::find()->where(['type' => Prize::PRIZE_ITEM])->andWhere(['IN', 'status', [Prize::PRIZE_DELIVERED, Prize::PRIZE_IN_TRANSFER, Prize::PRIZE_IN_BLOCK, Prize::PRIZE_DELIVERY_SHEDULED]])->all();
+        $spent_items = Prize::find()
+                            ->where(['type' => Prize::PRIZE_ITEM])
+                            ->andWhere(['IN', 'status', [Prize::PRIZE_DELIVERED, Prize::PRIZE_IN_TRANSFER, Prize::PRIZE_IN_BLOCK, Prize::PRIZE_DELIVERY_SHEDULED]])->all();
         foreach ($spent_items as $item) {
             unset($items[$item->item_id]);
         }
