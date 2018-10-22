@@ -137,8 +137,9 @@ class SiteController extends Controller
                 $prize->status = Prize::PRIZE_DELIVERY_SHEDULED;
                 $prize->save(false);
             }
+            return json_encode(['status' => 'success']);
         }
-        return json_encode(['status' => 'success',]);
+        return json_encode(['status' => 'fail']);
     }
 
     /**
@@ -157,6 +158,7 @@ class SiteController extends Controller
                 $this->redirect(['site/manage_items']);
             }
         }
+        $this->redirect(['site/error']);
     }
 
     /**
@@ -180,7 +182,7 @@ class SiteController extends Controller
     {
         $model = new Prize();
         if (isset($_POST['Prize'])) {
-            $model->attributes = $_POST['Prize'];
+            $model->load($_POST);
         }
         return $this->render('manage_cash',
             ['model' => $model]);
@@ -194,7 +196,7 @@ class SiteController extends Controller
     {
         $model = new Prize();
         if (isset($_POST['Prize'])) {
-            $model->attributes = $_POST['Prize'];
+            $model->load($_POST);
         }
         return $this->render('manage_items',
             ['model' => $model]);

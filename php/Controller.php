@@ -55,13 +55,17 @@ class Controller
         echo json_encode($responce);
     }
 
+    /**
+     * Cancel price action
+     * */
     public function action_cancel_prize(){
-        // cancel logic here
+        //cancel logic here
         echo json_encode(['status'=>'success',]);
     }
 
     /**
      * Get prize ajax action
+     *
      */
 
     public function action_get_prize(){
@@ -72,6 +76,7 @@ class Controller
 
     /**
      * Convert prize ajax action
+     *
      */
 
     public function action_convert_to_ico(){

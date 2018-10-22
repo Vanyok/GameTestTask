@@ -89,12 +89,11 @@ class Prize extends \yii\db\ActiveRecord
             $prize = $allPrizes[$winner];
             $prize->status = Prize::PRIZE_IN_BLOCK;
             $prize->user_id = Yii::$app->user->id;
-            $prize->save(false);
-            return $prize;
-        } else {
-            return null;
+            if($prize->save()){
+                return $prize;
+            };
         }
-
+            return null;
     }
 
     public function getAvailablePrizes()

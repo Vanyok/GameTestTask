@@ -8,7 +8,7 @@
 
 namespace php\models;
 
-//This class extends user class from decrioum module
+
 class DUser
 {
     private $account = 123456789;
@@ -17,6 +17,7 @@ class DUser
     }
 
     public static function getCurrentUserId(){
+        //ToDo: crate logic for get current user ID
         return 1;
     }
 

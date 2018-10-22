@@ -34,12 +34,12 @@ class FileDataModel
         while($obj = mysql_fetch_object($res)) {
             $records []= $obj;
         }
-        file_put_contents("data.json", json_encode($records));
+        return file_put_contents("data.json", json_encode($records));
 
     }
 
     function find($where,$one = 1){
-        
+        // ToDo: create logic which search for item by params
     }
 
 }

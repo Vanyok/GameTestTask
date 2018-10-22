@@ -28,7 +28,10 @@ class Prize extends FileDataModel
     const PRIZE_ITEM = 'item';
 
 
-
+    /**
+     * Get all prizes whic are reserved
+     * @return array
+     */
     public function getRezervedPrizes(){
         $data = json_decode(file_get_contents($this->fileName),true);
         $res = [];
@@ -50,6 +53,9 @@ class Prize extends FileDataModel
         return $res;
     }
 
+    /**
+     * save prize
+     */
     public function save(){
         $record = ['item_id'=>$this->item_id,
             'type'=>$this->type,
@@ -59,22 +65,29 @@ class Prize extends FileDataModel
         'user_id'=>$this->user_id];
         $data = json_decode(file_get_contents($this->fileName));
         $data[] = $record;
-        file_put_contents($this->fileName,json_encode($data));
+        if(file_put_contents($this->fileName,json_encode($data))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
+
     public function getRezervedCash(){
-        //There should be logic which calculate all delivered cash
+
+        // ToDo: create  logic which calculate all delivered cash
         return 100;
     }
 
+    /**
+     * get current User
+     * @return DUser
+     */
     public function getUser()
     {
+        // ToDo: create  logic which return current user
         return new DUser();
     }
-
-
-
-
 
     private function getAvailableIco(){
 
@@ -85,6 +98,16 @@ class Prize extends FileDataModel
 
     }
 
+    /**
+     * Generate icon|cash prize set
+     *
+     * @param $start
+     * @param $limit
+     * @param $step
+     * @param $type
+     *
+     * @return array
+     */
     private function generateIcoCashSet($start,$limit,$step, $type){
         $set = [];
         for ($amount = $start; $amount <= $limit; $amount += $step){
@@ -100,6 +123,10 @@ class Prize extends FileDataModel
 
     }
 
+    /**
+     * get all available  cash prizes
+     * @return array
+     */
     private function getAvailableCash()
     {
         $step = Params::$app_params['cash_step'];
@@ -111,6 +138,11 @@ class Prize extends FileDataModel
         return $this->generateIcoCashSet($start_amount,$limit,$step,Prize::PRIZE_CASH);
 
     }
+
+    /**
+     * get all available  icon prizes
+     * @return array
+     */
 
     private function getAvailableItems(){
         $set = [];
@@ -130,6 +162,10 @@ class Prize extends FileDataModel
         return $set;
     }
 
+    /**
+     * get all available prizes
+     * @return array
+     */
     public function getAvailablePrizes(){
         return array_merge($this->getAvailableIco(),$this->getAvailableCash(),$this->getAvailableItems());
     }
@@ -151,12 +187,18 @@ class Prize extends FileDataModel
     }
 
 
-
+    /**
+     * Send items
+     */
     public function sendItem(){
         $this->status = Prize::PRIZE_DELIVERED;
-        $this->save();
+        return $this->save();
     }
 
+    /**
+     * Send cash via bank api call
+     * @return bool
+     */
     public function sendCash(){
         $bank_url = Params::$app_params['bank_url'];
         if(!isset($this->userAccount))
@@ -171,14 +213,12 @@ class Prize extends FileDataModel
                 "amount"=>$this->amount,
                 "call_back"=>"site/callback")));
 
-// receive server response ...
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $server_output = curl_exec ($ch);
 
         curl_close ($ch);
 
-// further processing ....
         if ($server_output == "OK") {
             $this->status = Prize::PRIZE_IN_TRANSFER;
             $this->save();
