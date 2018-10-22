@@ -12,11 +12,14 @@ namespace php\models;
 class DUser
 {
     private $account = 123456789;
-    public function getAccount(){
+
+    public function getAccount()
+    {
         return $this->account;
     }
 
-    public static function getCurrentUserId(){
+    public static function getCurrentUserId()
+    {
         //ToDo: crate logic for get current user ID
         return 1;
     }

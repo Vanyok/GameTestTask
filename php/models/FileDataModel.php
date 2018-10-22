@@ -12,9 +12,9 @@ namespace php\models;
 class FileDataModel
 {
 
-    function __construct($params=[])
+    function __construct($params = [])
     {
-        foreach ($params as $param => $value){
+        foreach ($params as $param => $value) {
             $this->$param = $value;
         }
     }
@@ -24,21 +24,24 @@ class FileDataModel
         return '';
     }
 
-    function exportToJson() {
+    function exportToJson()
+    {
 
         mysql_connect("localhost", "root", "");
         mysql_select_db("krasimir_benchmark");
 
-        $res = mysql_query("SELECT * FROM users ORDER BY id");
+        $res     = mysql_query("SELECT * FROM users ORDER BY id");
         $records = array();
-        while($obj = mysql_fetch_object($res)) {
-            $records []= $obj;
+        while ($obj = mysql_fetch_object($res)) {
+            $records [] = $obj;
         }
+
         return file_put_contents("data.json", json_encode($records));
 
     }
 
-    function find($where,$one = 1){
+    function find($where, $one = 1)
+    {
         // ToDo: create logic which search for item by params
     }
 
